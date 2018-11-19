@@ -7,6 +7,7 @@ const (
 	normal lexerState = iota
 	inQuotation
 	inEscape
+	inJunk
 )
 
 type token struct {
@@ -42,6 +43,8 @@ func lexer(input string) <-chan token { // no checks here...
 						tokens <- token{tokenType(text), string(value)}
 						value = nil
 					}
+				case '\\':
+					state = inJunk
 				default:
 					value = append(value, next)
 				}
@@ -85,6 +88,8 @@ func lexer(input string) <-chan token { // no checks here...
 				}
 				value = append(value, next)
 				state = inQuotation
+			case inJunk:
+				state = normal
 			}
 			position++
 		}
