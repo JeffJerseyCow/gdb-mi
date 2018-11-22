@@ -8,6 +8,8 @@ import (
 	"sync"
 )
 
+var version = "undefined"
+
 // Gdb represents a GDB instance. It implements the ReadWriter interface to
 // read/write data from/to the target program's TTY.
 type Gdb struct {
